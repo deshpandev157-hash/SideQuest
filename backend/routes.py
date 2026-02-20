@@ -1,8 +1,8 @@
-from models import EpisodeRating
+from .models import EpisodeRating
 from external_api import search_tvmaze, search_anime
 from flask import Blueprint, request, jsonify
+from .models import User, Content, Review, EpisodeRating
 from .database import db
-from .models import User, Content, Review
 from werkzeug.security import generate_password_hash, check_password_hash
 
 auth_bp = Blueprint('auth', __name__)
