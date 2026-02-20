@@ -1,20 +1,23 @@
-from flask import Flask, render_template
-from flask_cors import CORS
+from flask import Flask
 from .database import db
-from routes import auth_bp
-
+from .routes import auth_bp
 import os
 
 app = Flask(__name__)
+
+# ---- DATABASE FIX FOR RENDER ----
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 db_path = os.path.join(BASE_DIR, "sidequest.db")
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + db_path
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db.init_app(app)
 
-# REGISTER API ROUTES
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
 
+@app.route("/")
+def home():
+    return {"message":"SideQuest Backend Running"}
 
 # ---------- WEBSITE PAGES ----------
 
