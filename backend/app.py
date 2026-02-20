@@ -1,8 +1,8 @@
 from flask import Flask
+from flask_cors import CORS
 from .database import db
 from .routes import auth_bp
 import os
-
 app = Flask(__name__)
 
 # ---- DATABASE FIX FOR RENDER ----
@@ -51,4 +51,5 @@ with app.app_context():
 
 # DO NOT run app.run() on cloud
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
