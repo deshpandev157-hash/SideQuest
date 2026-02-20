@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SideQuest</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="navbar">
+    <h1 class="logo">SideQuest</h1>
+
+    <input id="searchBox" type="text" placeholder="Search movies, anime, tv...">
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+    </nav>
+</header>
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <h2>Discover Movies, TV Shows & Anime</h2>
+    <p>Rate • Review • Explore</p>
+</section>
+
+<!-- MOVIES -->
+<h2 class="section-title">Movies</h2>
+<div class="container" id="movies"></div>
+
+<!-- TV -->
+<h2 class="section-title">TV Shows</h2>
+<div class="container" id="tv"></div>
+
+<!-- ANIME -->
+<h2 class="section-title">Anime</h2>
+<div class="container" id="anime"></div>
+
+<script>
+fetch("/api/auth/all_content")
+.then(res=>res.json())
+.then(data=>{
+
+    let movieHTML="", tvHTML="", animeHTML="";
+
+    data.forEach(item=>{
+        let card = `
+        <div class="card" onclick="openContent(${item.id})">
+            <img src="${item.poster}">
+            <h3>${item.title}</h3>
+            <p class="year">${item.year}</p>
+        </div>`;
+
+        if(item.category==="movie") movieHTML+=card;
+        else if(item.category==="tv") tvHTML+=card;
+        else animeHTML+=card;
+    });
+
+    document.getElementById("movies").innerHTML = movieHTML;
+    document.getElementById("tv").innerHTML = tvHTML;
+    document.getElementById("anime").innerHTML = animeHTML;
+});
+</script>
+<script>
+function openShow(type, id){
+    window.location.href = "/show/" + type + "/" + id;
+}
+</script>
+<script>
+const searchBox = document.getElementById("searchBox");
+
+searchBox.addEventListener("keyup", function(){
+
+    let query = searchBox.value;
+
+    if(query.length < 2) return;
+
+    fetch("/api/auth/live_search/" + query)
+    .then(res=>res.json())
+    .then(data=>{
+
+        let html="";
+
+        data.forEach(item=>{
+            html += `
+            <div class="card" onclick="openShow('${item.type}', ${item.id})">
+                <img src="${item.poster}">
+                <h3>${item.title}</h3>
+                <p>${item.year}</p>
+            </div>`;
+        });
+
+        document.getElementById("movies").innerHTML = html;
+        document.getElementById("tv").innerHTML = "";
+        document.getElementById("anime").innerHTML = "";
+    });
+});
+</script>
+</body>
+</html>

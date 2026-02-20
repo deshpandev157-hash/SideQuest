@@ -1,0 +1,82 @@
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#070b14;
+    color:white;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    padding:15px 40px;
+    background:#0a0f1f;
+    box-shadow:0 0 20px #7c3aed;
+}
+
+.logo{
+    color:#7c3aed;
+    font-size:28px;
+    text-shadow:0 0 15px #7c3aed;
+}
+
+nav a{
+    color:white;
+    margin-left:20px;
+    text-decoration:none;
+}
+
+.hero{
+    height:300px;
+    background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.9)),
+    url("https://wallpaperaccess.com/full/329583.jpg");
+    background-size:cover;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.hero h2{
+    font-size:42px;
+    color:#00e5ff;
+}
+
+.section-title{
+    margin:40px 30px 10px;
+    color:#00e5ff;
+}
+
+.container{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+    gap:25px;
+    padding:20px 30px;
+}
+
+.card{
+    background:#0f172a;
+    border-radius:10px;
+    overflow:hidden;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:scale(1.07);
+    box-shadow:0 0 25px #00e5ff;
+}
+
+.card img{
+    width:100%;
+    height:260px;
+    object-fit:cover;
+}
+
+.card h3{
+    text-align:center;
+    padding:10px;
+}
+
+.year{
+    text-align:center;
+    color:#9ca3af;
+}

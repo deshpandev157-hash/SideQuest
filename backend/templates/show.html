@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>SideQuest</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="navbar">
+    <h1 class="logo">SideQuest</h1>
+    <a href="/">Home</a>
+</header>
+
+<div id="show" style="padding:40px;">Loading...</div>
+<div id="episodes" style="padding:40px;"></div>
+
+<script>
+const parts = window.location.pathname.split("/");
+const type = parts[2];
+const id = parts[3];
+
+if(type === "anime"){
+    fetch("https://api.jikan.moe/v4/anime/" + id)
+    .then(res=>res.json())
+    .then(data=>{
+        const a = data.data;
+        document.getElementById("show").innerHTML = `
+            <img src="${a.images.jpg.large_image_url}" style="height:300px">
+            <h1>${a.title}</h1>
+            <p>${a.synopsis}</p>
+            <h2>⭐ ${a.score}</h2>
+            <p>Episodes: ${a.episodes}</p>
+        `;
+    });
+}
+
+if(type === "tv"){
+    fetch("https://api.tvmaze.com/shows/" + id)
+    .then(res=>res.json())
+    .then(show=>{
+        document.getElementById("show").innerHTML = `
+            <img src="${show.image.medium}">
+            <h1>${show.name}</h1>
+            <p>${show.summary}</p>
+            <h2>⭐ ${show.rating.average}</h2>
+        `;
+
+        // episodes
+        fetch("https://api.tvmaze.com/shows/"+id+"/episodes")
+        .then(res=>res.json())
+        .then(ep=>{
+            let list="<h2>Episodes</h2>";
+            ep.slice(0,20).forEach(e=>{
+    list+=`
+    <div style="background:#0f172a;margin:10px;padding:15px;border-radius:10px;">
+        <b>S${e.season}E${e.number} - ${e.name}</b><br><br>
+
+        <input id="r_${e.id}" type="number" min="1" max="10" placeholder="Rate 1-10">
+        <input id="c_${e.id}" type="text" placeholder="Comment">
+
+        <button onclick="rateEpisode(${id},${e.season},${e.number},${e.id})">
+        Submit
+        </button>
+    </div>
+    `;
+});
+            document.getElementById("episodes").innerHTML=list;
+        });
+    });
+}
+</script>
+<script>
+function rateEpisode(show,season,episode,epid){
+
+fetch("/api/auth/rate_episode",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+show_id:show,
+season:season,
+episode:episode,
+rating:document.getElementById("r_"+epid).value,
+comment:document.getElementById("c_"+epid).value
+})
+}).then(res=>res.json())
+.then(data=>alert("Episode rating saved!"));
+
+}
+</script>
+</body>
+</html>

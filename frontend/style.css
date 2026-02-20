@@ -1,0 +1,80 @@
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:#0b0f1a;
+    color:white;
+}
+
+/* Navbar */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 30px;
+    background:#05070d;
+    box-shadow:0 0 15px #00e5ff;
+}
+
+.logo{
+    color:#00e5ff;
+    font-size:28px;
+    font-weight:bold;
+    text-shadow:0 0 10px #00e5ff;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    transition:0.3s;
+}
+
+nav a:hover{
+    color:#a855f7;
+    text-shadow:0 0 10px #a855f7;
+}
+
+/* Center text */
+h2{
+    margin-top:80px;
+    font-size:40px;
+    color:#00e5ff;
+    text-shadow:0 0 15px #00e5ff;
+}
+
+p{
+    font-size:18px;
+    color:#cbd5e1;
+}
+
+/* Cards (later for movies) */
+.container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:25px;
+    padding:40px;
+}
+
+.card{
+    background:#111827;
+    border-radius:12px;
+    overflow:hidden;
+    transition:0.3s;
+    box-shadow:0 0 15px rgba(0,229,255,0.2);
+}
+
+.card:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 25px #00e5ff;
+}
+
+.card img{
+    width:100%;
+    height:280px;
+    object-fit:cover;
+}
+
+.card h3{
+    padding:10px;
+    text-align:center;
+}

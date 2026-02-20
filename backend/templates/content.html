@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SideQuest</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="navbar">
+    <h1 class="logo">SideQuest</h1>
+    <nav>
+        <a href="/">Home</a>
+    </nav>
+</header>
+
+<div style="padding:40px;" id="content-area">
+Loading...
+</div>
+
+<h2 style="margin-left:40px;">Reviews</h2>
+<div id="reviews" style="padding:40px;"></div>
+<h2 style="margin-left:40px;">Add Review</h2>
+<div style="padding:40px;">
+    <textarea id="comment" placeholder="Write your review"></textarea><br><br>
+    <input id="rating" type="number" min="1" max="10" placeholder="Rating (1-10)">
+    <button onclick="submitReview()">Submit</button>
+</div>
+
+<script>
+const id = window.location.pathname.split("/")[2];
+
+// LOAD CONTENT
+fetch("/api/auth/content/" + id)
+.then(res=>res.json())
+.then(data=>{
+    document.getElementById("content-area").innerHTML = `
+        <img src="${data.poster}" style="height:320px;">
+        <h1>${data.title}</h1>
+        <p>${data.description}</p>
+        <p><b>Genre:</b> ${data.genre}</p>
+        <p><b>Year:</b> ${data.year}</p>
+<h2 style="color:#00e5ff;">⭐ ${data.avg_rating} / 10</h2>    `;
+});
+
+// LOAD REVIEWS
+function loadReviews(){
+fetch("/api/auth/reviews/" + id)
+.then(res=>res.json())
+.then(data=>{
+    let html="";
+    data.forEach(r=>{
+        html+=`
+        <div style="background:#0f172a;padding:15px;margin:10px 0;border-radius:10px;">
+            <b>${r.username}</b> ⭐ ${r.rating}/10
+            <p>${r.comment}</p>
+        </div>`;
+    });
+    document.getElementById("reviews").innerHTML=html;
+});
+}
+
+loadReviews();
+
+// ADD REVIEW
+function submitReview(){
+    fetch("/api/auth/add_review",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
+            content_id:id,
+            rating:document.getElementById("rating").value,
+            comment:document.getElementById("comment").value
+        })
+    }).then(res=>res.json()).then(data=>{
+        alert("Review posted!");
+        loadReviews();
+    });
+}
+</script>
+</body>
+</html>
