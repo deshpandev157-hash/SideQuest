@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from flask_cors import CORS
-from database import db
+from .database import db
 from routes import auth_bp
 
 import os
