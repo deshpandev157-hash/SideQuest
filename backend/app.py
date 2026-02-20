@@ -42,8 +42,10 @@ def content_page(id):
 def show_page(type, id):
     return render_template("show.html")
 
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()   # <-- THIS CREATES TABLES
-    app.run(host="0.0.0.0", port=5000, debug=True)
+# create database tables automatically (for Render too)
+with app.app_context():
+    db.create_all()
 
+# DO NOT run app.run() on cloud
+if __name__ == "__main__":
+    app.run(debug=True)
