@@ -3,13 +3,13 @@ from flask_cors import CORS
 from database import db
 from routes import auth_bp
 
+import os
+
 app = Flask(__name__)
-CORS(app)
-
-# DATABASE
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sidequest.db'
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+db_path = os.path.join(BASE_DIR, "sidequest.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + db_path
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 db.init_app(app)
 
 # REGISTER API ROUTES
